@@ -1,0 +1,12 @@
+.gradle/
+gradle/
+.idea/
+build/
+
+*.iml
+*.orig
+*.txt
+
+gradlew
+gradlew.bat
+local.properties

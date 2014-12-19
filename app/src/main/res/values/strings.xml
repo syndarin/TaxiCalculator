@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">TaxiCalculator</string>
+
+    <string name="button_new_ride">New ride</string>
+
+    <string name="button_companions">Companions</string>
+
+    <string name="button_statistics">Statistics</string>
+
+    <string name="button_settings">\"Settings</string>
+
+</resources>
