@@ -17,22 +17,22 @@ public class MenuFragment extends BaseFragment {
 	
 	@OnClick(R.id.buttonNewRide)
 	public void startNewRide(){
-		
+		mIScreenNavigator.showNewRide();
 	}
 
-	@OnClick(R.id.buttonNewRide)
+	@OnClick(R.id.buttonCompanions)
 	public void showMyCompanions(){
-		
+		mIScreenNavigator.showMyCompanions();
 	}
 	
-	@OnClick(R.id.buttonNewRide)
+	@OnClick(R.id.buttonTaxiStatistics)
 	public void showStatistics(){
-		
+		mIScreenNavigator.showStatistics();
 	}
 	
-	@OnClick(R.id.buttonNewRide)
+	@OnClick(R.id.buttonSettings)
 	public void showSettings(){
-		
+		mIScreenNavigator.showSettings();
 	}
 
 }

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.syndarin.taxicalculator"
-        minSdkVersion 8
+        minSdkVersion 15
         targetSdkVersion 21
     }
 
@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
     compile files('libs/butterknife-6.0.0.jar')
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
 }
