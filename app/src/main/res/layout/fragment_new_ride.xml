@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView 
+    <Button
+        android:text="@string/button_start_ride"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New ride"/>
+        android:id="@+id/buttonStartRide"/>
+
+    <Button
+        android:text="@string/button_stop_ride"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStopRide"/>
     
 
 </LinearLayout>

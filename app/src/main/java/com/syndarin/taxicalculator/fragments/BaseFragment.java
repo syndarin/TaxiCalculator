@@ -4,6 +4,7 @@ import butterknife.ButterKnife;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,13 @@ import com.syndarin.taxicalculator.IScreenNavigator;
 
 public class BaseFragment extends Fragment {
 
+    protected String tag;
+
     protected IScreenNavigator mIScreenNavigator;
+
+    public BaseFragment() {
+        tag = getClass().getSimpleName();
+    }
 
     @Override
     public void onAttach(Activity activity) {

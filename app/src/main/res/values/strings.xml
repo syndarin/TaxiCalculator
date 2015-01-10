@@ -11,4 +11,8 @@
     <string name="key_preference_check_stops">check_possible_stops</string>
     <string name="list_empty_view">No entries</string>
 
+    <string name="message_play_services_unavailable">You have cancelled Play Services error resolution. Some of app functions may be unavailable.</string>
+    <string name="button_start_ride">Start ride</string>
+    <string name="button_stop_ride">Stop ride</string>
+
 </resources>
