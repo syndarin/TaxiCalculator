@@ -54,6 +54,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         mGoogleApiClient = builder.build();
 
         mGoogleApiClient.connect();
+
         return START_STICKY;
     }
 

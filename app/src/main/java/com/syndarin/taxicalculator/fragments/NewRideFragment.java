@@ -10,13 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.syndarin.taxicalculator.R;
 import com.syndarin.taxicalculator.location.ILocationServiceAccessor;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class NewRideFragment extends BaseFragment {
+public class NewRideFragment extends BaseFragment implements OnMapReadyCallback {
 
     private ILocationServiceAccessor mLocationServiceAccessor;
 
@@ -39,6 +42,13 @@ public class NewRideFragment extends BaseFragment {
         return createView(inflater, container, R.layout.fragment_new_ride);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        MapFragment map = (MapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+        map.getMapAsync(this);
+    }
+
     @OnClick(R.id.buttonStartRide)
     public void startLocationTracking(){
         mLocationServiceAccessor.startTrackingLocation();
@@ -47,5 +57,10 @@ public class NewRideFragment extends BaseFragment {
     @OnClick(R.id.buttonStopRide)
     public void stopLocationTracking(){
         mLocationServiceAccessor.stopTrackingLocation();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
