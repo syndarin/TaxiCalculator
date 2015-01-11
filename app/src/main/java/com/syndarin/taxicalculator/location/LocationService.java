@@ -2,9 +2,12 @@ package com.syndarin.taxicalculator.location;
 
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,9 +32,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     public LocationService() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setInterval(2000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
     }
 
     @Override

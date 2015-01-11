@@ -15,11 +15,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationServices;
 import com.syndarin.taxicalculator.location.ILocationServiceAccessor;
 import com.syndarin.taxicalculator.location.LocationService;
+import com.syndarin.taxicalculator.util.LocationSettingsUtil;
 
 public class MainActivity extends ActionBarActivity implements IScreenNavigator, ILocationServiceAccessor {
 
@@ -44,6 +46,13 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
                 Log.i(tag, "connection failed");
             } else if (LocationService.ACTION_LOCATION_UPDATED.equals(action)){
                 Log.i(tag, "location update received");
+                Location location = intent.getParcelableExtra(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
+                if(location != null) {
+                    Log.i(tag, "Location - " + location.getLatitude() + ", " + location.getLongitude());
+                } else {
+                    Log.i(tag, "Location extra is null");
+                }
+
             } else {
                 Log.i(tag, "receiver get unknown action - " + action);
             }
@@ -123,8 +132,12 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
 
     @Override
     public void startTrackingLocation() {
-        registerReceiver(mLocationUpdatedReceiver, mLocationUpdatesFilter);
-        startService(mIntentLocationService);
+        if(LocationSettingsUtil.checkLocationTrackingAllowed(getContentResolver())){
+            registerReceiver(mLocationUpdatedReceiver, mLocationUpdatesFilter);
+            startService(mIntentLocationService);
+        } else {
+            LocationSettingsUtil.showLocationTrackingSettingsDialog(this);
+        }
     }
 
     @Override
