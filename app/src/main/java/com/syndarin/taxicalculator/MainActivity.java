@@ -40,14 +40,14 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(LocationService.ACTION_CONNECTION_ESTABLISHED.equals(action)){
+            if (LocationService.ACTION_CONNECTION_ESTABLISHED.equals(action)) {
                 Log.i(tag, "location service connected");
-            } else if (LocationService.ACTION_CONNECTION_FAILED.equals(action)){
+            } else if (LocationService.ACTION_CONNECTION_FAILED.equals(action)) {
                 Log.i(tag, "connection failed");
-            } else if (LocationService.ACTION_LOCATION_UPDATED.equals(action)){
+            } else if (LocationService.ACTION_LOCATION_UPDATED.equals(action)) {
                 Log.i(tag, "location update received");
                 Location location = intent.getParcelableExtra(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
-                if(location != null) {
+                if (location != null) {
                     Log.i(tag, "Location - " + location.getLatitude() + ", " + location.getLongitude());
                 } else {
                     Log.i(tag, "Location extra is null");
@@ -105,34 +105,35 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
         mScreenNavigator.showScreen(screen, getFragmentManager());
     }
 
-    private boolean checkGoogleServicesAvailable(){
+    private boolean checkGoogleServicesAvailable() {
         int availabilityStatus = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if(availabilityStatus != ConnectionResult.SUCCESS){
-
-            DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    showToast(R.string.message_play_services_unavailable);
-                }
-            };
-
-            if(GooglePlayServicesUtil.isUserRecoverableError(availabilityStatus)){
-                GooglePlayServicesUtil.showErrorDialogFragment(availabilityStatus, this, REQUEST_CODE_FIX_PLAY_SERVICES, onCancelListener);
-            }
-
+        if (availabilityStatus != ConnectionResult.SUCCESS && GooglePlayServicesUtil.isUserRecoverableError(availabilityStatus)) {
+            suggestUserToInstallGoogleServices(availabilityStatus);
             return false;
         }
 
         return true;
     }
 
-    public void showToast(int stringResourceId){
+    private void suggestUserToInstallGoogleServices(int availabilityStatus){
+
+        DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                showToast(R.string.message_play_services_unavailable);
+            }
+        };
+
+        GooglePlayServicesUtil.showErrorDialogFragment(availabilityStatus, this, REQUEST_CODE_FIX_PLAY_SERVICES, onCancelListener);
+    }
+
+    public void showToast(int stringResourceId) {
         Toast.makeText(this, stringResourceId, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void startTrackingLocation() {
-        if(LocationSettingsUtil.checkLocationTrackingAllowed(getContentResolver())){
+        if (LocationSettingsUtil.checkLocationTrackingAllowed(getContentResolver())) {
             registerReceiver(mLocationUpdatedReceiver, mLocationUpdatesFilter);
             startService(mIntentLocationService);
         } else {
