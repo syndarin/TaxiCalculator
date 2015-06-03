@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.otto.Subscribe;
 import com.syndarin.taxicalculator.R;
 import com.syndarin.taxicalculator.location.ILocationServiceAccessor;
 
@@ -22,6 +27,8 @@ import butterknife.OnClick;
 public class NewRideFragment extends BaseFragment implements OnMapReadyCallback {
 
     private ILocationServiceAccessor mLocationServiceAccessor;
+
+    private GoogleMap mMap;
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,6 +68,20 @@ public class NewRideFragment extends BaseFragment implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+    }
 
+    @Subscribe
+    public void onLocationUpdated(Location location){
+        Log.i(tag, "Event location update!");
+        updateMyPositionOnMap(location);
+    }
+
+    private void updateMyPositionOnMap(Location location){
+        MarkerOptions options = new MarkerOptions()
+                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
+
+        mMap.addMarker(options);
     }
 }

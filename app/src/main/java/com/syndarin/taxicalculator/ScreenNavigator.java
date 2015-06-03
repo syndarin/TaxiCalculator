@@ -11,7 +11,10 @@ import com.syndarin.taxicalculator.fragments.SettingsFragment;
 import com.syndarin.taxicalculator.fragments.StatisticsFragment;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * Created by syndarin on 1/8/15.

@@ -1,5 +1,6 @@
 package com.syndarin.taxicalculator;
 
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,17 +14,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.Api;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderApi;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationServices;
+import com.squareup.otto.Bus;
 import com.syndarin.taxicalculator.location.ILocationServiceAccessor;
 import com.syndarin.taxicalculator.location.LocationService;
 import com.syndarin.taxicalculator.util.LocationSettingsUtil;
 
-public class MainActivity extends ActionBarActivity implements IScreenNavigator, ILocationServiceAccessor {
+public class MainActivity extends ActionBarActivity implements IScreenNavigator, ILocationServiceAccessor, IBusProvider {
 
     public enum Screen {MENU, RIDE, COMPANIONS, STATISTICS, SETTINGS}
 
@@ -35,6 +32,7 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
 
     private Intent mIntentLocationService;
     private IntentFilter mLocationUpdatesFilter;
+    private Bus mEventBus = new Bus();
 
     private BroadcastReceiver mLocationUpdatedReceiver = new BroadcastReceiver() {
         @Override
@@ -49,6 +47,7 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
                 Location location = intent.getParcelableExtra(FusedLocationProviderApi.KEY_LOCATION_CHANGED);
                 if (location != null) {
                     Log.i(tag, "Location - " + location.getLatitude() + ", " + location.getLongitude());
+                    mEventBus.post(location);
                 } else {
                     Log.i(tag, "Location extra is null");
                 }
@@ -117,11 +116,8 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
 
     private void suggestUserToInstallGoogleServices(int availabilityStatus){
 
-        DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                showToast(R.string.message_play_services_unavailable);
-            }
+        DialogInterface.OnCancelListener onCancelListener = (dialog) -> {
+          showToast(R.string.message_play_services_unavailable);
         };
 
         GooglePlayServicesUtil.showErrorDialogFragment(availabilityStatus, this, REQUEST_CODE_FIX_PLAY_SERVICES, onCancelListener);
@@ -145,5 +141,15 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
     public void stopTrackingLocation() {
         unregisterReceiver(mLocationUpdatedReceiver);
         stopService(mIntentLocationService);
+    }
+
+    @Override
+    public void register(Fragment f) {
+        mEventBus.register(f);
+    }
+
+    @Override
+    public void unregister(Fragment f) {
+        mEventBus.unregister(f);
     }
 }

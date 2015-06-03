@@ -24,11 +24,17 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public final static String ACTION_CONNECTION_ESTABLISHED = LocationService.class.getName() + ".ACTION_CONNECTION_ESTABLISHED";
     public final static String ACTION_CONNECTION_FAILED = LocationService.class.getName() + ".ACTION_CONNECTION_FAILED";
 
+    public final static String EXTRA_UPDATE_TYPE = "UPDATE_TYPE";
+    public final static int EXTRA_UPDATE_SINGLE = 1;
+    public final static int EXTRA_UPDATE_CONSTANT = 2;
+
     private final static String tag = LocationService.class.getSimpleName();
 
     private final LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private PendingIntent mLocationUpdateIntentWrapper;
+
+    private boolean mSingleUpdate;
 
     public LocationService() {
         mLocationRequest = new LocationRequest();
@@ -42,7 +48,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(tag, "on start command...");
+        mSingleUpdate = intent.getBooleanExtra(EXTRA_UPDATE_TYPE, false);
 
         Intent locationUpdateIntent = new Intent(ACTION_LOCATION_UPDATED);
         mLocationUpdateIntentWrapper = PendingIntent.getBroadcast(LocationService.this, 0, locationUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -85,7 +91,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     @Override
     public void onDestroy() {
         Log.i(tag, "on destroy... stopping location updates");
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationUpdateIntentWrapper);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationUpdateIntentWrapper);
         super.onDestroy();
     }
 }
