@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,7 +60,7 @@ public class NewRideFragment extends BaseFragment implements OnMapReadyCallback 
 
     @OnClick(R.id.buttonStartRide)
     public void startLocationTracking(){
-        mLocationServiceAccessor.startTrackingLocation();
+        mLocationServiceAccessor.startTrackingLocation(false);
     }
 
     @OnClick(R.id.buttonStopRide)
@@ -69,6 +71,7 @@ public class NewRideFragment extends BaseFragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mLocationServiceAccessor.startTrackingLocation(true);
     }
 
     @Subscribe
@@ -78,10 +81,15 @@ public class NewRideFragment extends BaseFragment implements OnMapReadyCallback 
     }
 
     private void updateMyPositionOnMap(Location location){
+        LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+
         MarkerOptions options = new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .position(position)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
 
+        mMap.clear();
         mMap.addMarker(options);
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, mMap.getMaxZoomLevel()));
     }
 }

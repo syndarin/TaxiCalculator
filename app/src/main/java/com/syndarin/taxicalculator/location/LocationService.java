@@ -2,12 +2,9 @@ package com.syndarin.taxicalculator.location;
 
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,9 +21,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public final static String ACTION_CONNECTION_ESTABLISHED = LocationService.class.getName() + ".ACTION_CONNECTION_ESTABLISHED";
     public final static String ACTION_CONNECTION_FAILED = LocationService.class.getName() + ".ACTION_CONNECTION_FAILED";
 
-    public final static String EXTRA_UPDATE_TYPE = "UPDATE_TYPE";
-    public final static int EXTRA_UPDATE_SINGLE = 1;
-    public final static int EXTRA_UPDATE_CONSTANT = 2;
+    public final static String EXTRA_TRACKING_TYPE = "TRACKING_TYPE";
+    public final static String EXTRA_STOP_FLAG = "STOP_FLAG";
 
     private final static String tag = LocationService.class.getSimpleName();
 
@@ -37,8 +33,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     private boolean mSingleUpdate;
 
     public LocationService() {
+        Log.i(tag, "Location service constructor called");
         mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        mLocationRequest.setInterval(10 * 1000);
     }
 
     @Override
@@ -48,9 +46,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mSingleUpdate = intent.getBooleanExtra(EXTRA_UPDATE_TYPE, false);
+        boolean singleUpdate = intent.getBooleanExtra(EXTRA_TRACKING_TYPE, false);
 
         Intent locationUpdateIntent = new Intent(ACTION_LOCATION_UPDATED);
+        locationUpdateIntent.putExtra(EXTRA_STOP_FLAG, singleUpdate);
         mLocationUpdateIntentWrapper = PendingIntent.getBroadcast(LocationService.this, 0, locationUpdateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         GoogleApiClient.Builder builder = new GoogleApiClient.Builder(this);

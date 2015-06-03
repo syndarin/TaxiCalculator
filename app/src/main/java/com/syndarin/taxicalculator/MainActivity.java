@@ -52,6 +52,11 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
                     Log.i(tag, "Location extra is null");
                 }
 
+                boolean stopFlag = intent.getBooleanExtra(LocationService.EXTRA_STOP_FLAG, false);
+                if(stopFlag){
+                    stopTrackingLocation();
+                }
+
             } else {
                 Log.i(tag, "receiver get unknown action - " + action);
             }
@@ -128,9 +133,10 @@ public class MainActivity extends ActionBarActivity implements IScreenNavigator,
     }
 
     @Override
-    public void startTrackingLocation() {
+    public void startTrackingLocation(boolean singleUpdate) {
         if (LocationSettingsUtil.checkLocationTrackingAllowed(getContentResolver())) {
             registerReceiver(mLocationUpdatedReceiver, mLocationUpdatesFilter);
+            mIntentLocationService.putExtra(LocationService.EXTRA_TRACKING_TYPE, singleUpdate);
             startService(mIntentLocationService);
         } else {
             LocationSettingsUtil.showLocationTrackingSettingsDialog(this);
