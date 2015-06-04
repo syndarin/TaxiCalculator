@@ -17,6 +17,8 @@ import com.google.android.gms.location.LocationServices;
  */
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private final static String tag = LocationService.class.getSimpleName();
+
     public final static String ACTION_LOCATION_UPDATED = LocationService.class.getName() + ".ACTION_LOCATION_UPDATED";
     public final static String ACTION_CONNECTION_ESTABLISHED = LocationService.class.getName() + ".ACTION_CONNECTION_ESTABLISHED";
     public final static String ACTION_CONNECTION_FAILED = LocationService.class.getName() + ".ACTION_CONNECTION_FAILED";
@@ -24,7 +26,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public final static String EXTRA_TRACKING_TYPE = "TRACKING_TYPE";
     public final static String EXTRA_STOP_FLAG = "STOP_FLAG";
 
-    private final static String tag = LocationService.class.getSimpleName();
+    private final static long UPDATE_INTERVAL = 3 * 60 * 1000;
+    private final static long FASTEST_UPDATE_INTERVAL = 1 * 60 * 1000;
 
     private final LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
@@ -35,8 +38,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public LocationService() {
         Log.i(tag, "Location service constructor called");
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        mLocationRequest.setInterval(10 * 1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
     }
 
     @Override
