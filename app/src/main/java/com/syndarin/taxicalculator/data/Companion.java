@@ -2,6 +2,7 @@ package com.syndarin.taxicalculator.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.syndarin.taxicalculator.util.Const;
 
@@ -36,7 +37,7 @@ public class Companion {
         Companion companion = new Companion();
 
         companion.mId = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-        companion.mName = cursor.getInt(cursor.getColumnIndex(COLUMN_NAME));
+        companion.mName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         companion.mRidesTogether = cursor.getInt(cursor.getColumnIndex(COLUMN_RIDES_TOGETHER));
         companion.mUnpaidAmount = cursor.getInt(cursor.getColumnIndex(COLUMN_UNPAID_AMOUNT));
         companion.mEmail = cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL));
@@ -47,7 +48,7 @@ public class Companion {
 
     private int mId;
 
-    private int mName;
+    private String mName;
 
     private int mRidesTogether;
 
@@ -61,7 +62,7 @@ public class Companion {
         this.mId = id;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.mName = name;
     }
 
@@ -79,6 +80,30 @@ public class Companion {
 
     public void setPhone(String phone) {
         this.mPhone = phone;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public int getRidesTogether() {
+        return mRidesTogether;
+    }
+
+    public int getUnpaidAmount() {
+        return mUnpaidAmount;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public String getPhone() {
+        return mPhone;
     }
 
     public ContentValues getContentValues(){
