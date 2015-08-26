@@ -13,25 +13,25 @@ import com.syndarin.taxicalculator.persistence.DB;
 public class Companion extends BaseModel {
 
     public final static String COLUMN_ID = "id";
-    public final static String COLUMN_NAME = "id";
-    public final static String COLUMN_RIDES_TOGETHER = "id";
-    public final static String COLUMN_OVERALL_SPENT = "id";
-    public final static String COLUMN_HAS_UNPAID_RIDES = "id";
+    public final static String COLUMN_NAME = "name";
+    public final static String COLUMN_RIDES_TOGETHER = "rides_together";
+    public final static String COLUMN_OVERALL_SPENT = "overall_spent";
+    public final static String COLUMN_HAS_UNPAID_RIDES = "has_unpaid_rides";
 
-    @Column(name = COLUMN_ID)
+    @Column
     @PrimaryKey(autoincrement = true)
-    long mId;
+    int mId;
 
-    @Column(name = COLUMN_NAME)
+    @Column
     String mName;
 
-    @Column(name = COLUMN_RIDES_TOGETHER)
+    @Column
     int mRidesTogether;
 
-    @Column(name = COLUMN_OVERALL_SPENT)
+    @Column
     int mOverallSpent;
 
-    @Column(name = COLUMN_HAS_UNPAID_RIDES)
+    @Column
     boolean mHasUnpaidRides;
 
 }

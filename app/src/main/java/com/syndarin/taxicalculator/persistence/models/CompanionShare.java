@@ -27,28 +27,28 @@ public class CompanionShare extends BaseModel {
     public final static String COLUMN_COST_SHARE = "cost_share";
     public final static String COLUMN_PAID = "paid";
 
+
+    @Column
     @PrimaryKey(autoincrement = true)
-    @Column(name = COLUMN_ID)
     int mId;
 
     @Column
-    @ForeignKey(references = {@ForeignKeyReference(columnName = COLUMN_RIDE, columnType = Integer.class, foreignColumnName = Ride.COLUMN_ID)}, saveForeignKeyModel = false)
-    ForeignKeyContainer<Ride> mRide;
+    int mRideId;
 
     @Column
     @ForeignKey(references = {@ForeignKeyReference(columnName = COLUMN_COMPANION, columnType = Integer.class, foreignColumnName = Companion.COLUMN_ID)}, saveForeignKeyModel = false)
-    ForeignKeyContainer<Companion> mCompanion;
+    Companion mCompanion;
 
-    @Column(name = COLUMN_WP_JOINED)
-    LatLng mWaypointJoined;
+    @Column
+    int mWaypointJoined;
 
-    @Column(name = COLUMN_WP_LEAVED)
-    LatLng mWaypointLeaved;
+    @Column
+    int mWaypointLeaved;
 
-    @Column(name = COLUMN_COST_SHARE)
+    @Column
     float mCostShare;
 
-    @Column(name = COLUMN_PAID)
+    @Column
     boolean mPaid;
 
 }
