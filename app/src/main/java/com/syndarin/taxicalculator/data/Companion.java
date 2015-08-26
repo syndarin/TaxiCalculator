@@ -1,5 +1,8 @@
 package com.syndarin.taxicalculator.data;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.syndarin.taxicalculator.util.Const;
 
 /**
@@ -26,6 +29,21 @@ public class Companion {
             + ")";
 
     public static String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    public static String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
+
+    public static Companion fromCursor(Cursor cursor){
+        Companion companion = new Companion();
+
+        companion.mId = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+        companion.mName = cursor.getInt(cursor.getColumnIndex(COLUMN_NAME));
+        companion.mRidesTogether = cursor.getInt(cursor.getColumnIndex(COLUMN_RIDES_TOGETHER));
+        companion.mUnpaidAmount = cursor.getInt(cursor.getColumnIndex(COLUMN_UNPAID_AMOUNT));
+        companion.mEmail = cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL));
+        companion.mPhone = cursor.getString(cursor.getColumnIndex(COLUMN_PHONE));
+
+        return companion;
+    }
 
     private int mId;
 
@@ -61,5 +79,17 @@ public class Companion {
 
     public void setPhone(String phone) {
         this.mPhone = phone;
+    }
+
+    public ContentValues getContentValues(){
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, mName);
+        values.put(COLUMN_RIDES_TOGETHER, mRidesTogether);
+        values.put(COLUMN_UNPAID_AMOUNT, mUnpaidAmount);
+        values.put(COLUMN_EMAIL, mEmail);
+        values.put(COLUMN_PHONE, mPhone);
+
+        return values;
     }
 }
