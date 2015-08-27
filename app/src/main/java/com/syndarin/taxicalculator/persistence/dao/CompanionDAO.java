@@ -26,7 +26,7 @@ public class CompanionDAO {
         return db.delete(Companion.TABLE_NAME, Companion.COLUMN_ID + " = ?", new String[]{String.valueOf(whereId)});
     }
 
-    public List<Companion> getAll(SQLiteDatabase db){
+    public static List<Companion> getAll(SQLiteDatabase db){
         List<Companion> result = new ArrayList<>();
 
         Cursor c = db.rawQuery(Companion.SQL_SELECT_ALL, null);
@@ -36,6 +36,7 @@ public class CompanionDAO {
                 result.add(companion);
             }
         }
+        c.close();
 
         return result;
     }

@@ -2,6 +2,7 @@ package com.syndarin.taxicalculator.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.syndarin.taxicalculator.util.Const;
@@ -11,16 +12,18 @@ import com.syndarin.taxicalculator.util.Const;
  */
 public class Companion {
 
-    public static String TABLE_NAME = "companions";
+    public final static Uri CONTENT_URI = Uri.parse("content://com.syndarin.taxicalculator/companion");
 
-    public static String COLUMN_ID = "_id";
-    public static String COLUMN_NAME = "name";
-    public static String COLUMN_RIDES_TOGETHER = "rides_together";
-    public static String COLUMN_UNPAID_AMOUNT = "unpaid_amount";
-    public static String COLUMN_EMAIL = "email";
-    public static String COLUMN_PHONE = "phone";
+    public final static String TABLE_NAME = "companions";
 
-    public static String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
+    public final static String COLUMN_ID = "_id";
+    public final static String COLUMN_NAME = "name";
+    public final static String COLUMN_RIDES_TOGETHER = "rides_together";
+    public final static String COLUMN_UNPAID_AMOUNT = "unpaid_amount";
+    public final static String COLUMN_EMAIL = "email";
+    public final static String COLUMN_PHONE = "phone";
+
+    public final static String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text(" + Const.COMPANION_MAX_NAME_LENGTH + ") not null, "
             + COLUMN_RIDES_TOGETHER + " integer(5) default 0, "
@@ -29,11 +32,11 @@ public class Companion {
             + COLUMN_PHONE + " text, "
             + ")";
 
-    public static String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    public final static String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public static String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
+    public final static String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
 
-    public static Companion fromCursor(Cursor cursor){
+    public final static Companion fromCursor(Cursor cursor){
         Companion companion = new Companion();
 
         companion.mId = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
