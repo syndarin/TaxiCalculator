@@ -10,7 +10,7 @@ import com.syndarin.taxicalculator.util.Const;
 /**
  * Created by syndarin on 8/26/15.
  */
-public class Companion {
+public class Companion implements IDbModel {
 
     public final static Uri CONTENT_URI = Uri.parse("content://com.syndarin.taxicalculator/companion");
 
@@ -29,7 +29,7 @@ public class Companion {
             + COLUMN_RIDES_TOGETHER + " integer(5) default 0, "
             + COLUMN_UNPAID_AMOUNT + " real default 0, "
             + COLUMN_EMAIL + " text, "
-            + COLUMN_PHONE + " text, "
+            + COLUMN_PHONE + " text"
             + ")";
 
     public final static String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -109,7 +109,8 @@ public class Companion {
         return mPhone;
     }
 
-    public ContentValues getContentValues(){
+    @Override
+    public ContentValues toContentValues(){
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_NAME, mName);

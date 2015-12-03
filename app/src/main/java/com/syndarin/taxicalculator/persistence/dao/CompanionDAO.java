@@ -15,11 +15,11 @@ import java.util.List;
 public class CompanionDAO {
 
     public static long insert(SQLiteDatabase db, Companion companion){
-        return db.insert(Companion.TABLE_NAME, null, companion.getContentValues());
+        return db.insert(Companion.TABLE_NAME, null, companion.toContentValues());
     }
 
     public static int update(SQLiteDatabase db, Companion companion, int whereId){
-        return db.update(Companion.TABLE_NAME, companion.getContentValues(), Companion.COLUMN_ID + " = ?", new String[]{String.valueOf(whereId)});
+        return db.update(Companion.TABLE_NAME, companion.toContentValues(), Companion.COLUMN_ID + " = ?", new String[]{String.valueOf(whereId)});
     }
 
     public static int delete(SQLiteDatabase db, int whereId){
